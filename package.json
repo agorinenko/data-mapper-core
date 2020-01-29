@@ -1,0 +1,23 @@
+{
+  "name": "data-mapper-core",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/data-mapper-core.js",
+  "scripts": {
+    "buildProduction": "webpack --mode production",
+    "buildDevelopment": "webpack --mode development"
+  },
+  "dependencies": {
+    "axios": "^0.19.2"
+  },
+  "devDependencies": {
+    "babel-loader": "^8.0.6",
+    "webpack-cli": "^3.3.10",
+    "webpack": "^4.41.5",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.4.3"
+  },
+  "keywords": [],
+  "author": "Gorinenko Anton",
+  "license": "ISC"
+}
