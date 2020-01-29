@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "target": "es5",
+    "downlevelIteration": true,
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,

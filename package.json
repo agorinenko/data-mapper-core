@@ -7,6 +7,11 @@
     "buildProduction": "webpack --mode production",
     "buildDevelopment": "webpack --mode development"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agorinenko/data-mapper-core.git"
+  },
+  "homepage": "https://github.com/agorinenko/data-mapper-core",
   "dependencies": {
     "axios": "^0.19.2"
   },
@@ -19,5 +24,5 @@
   },
   "keywords": [],
   "author": "Gorinenko Anton",
-  "license": "ISC"
+  "license": "MIT"
 }
