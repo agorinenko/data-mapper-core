@@ -1,8 +1,8 @@
-import DataRow from "@/data_row";
-import GetItemsResult from "@/get_items_result";
+import DataRow from "./data_row";
+import GetItemsResult from "./get_items_result";
 
 export default abstract class BaseDataMapper<T extends DataRow> {
-    public abstract async getItems(filter: any): Promise<GetItemsResult<T>>;
+    public abstract async getItems(filter?: any): Promise<GetItemsResult<T>>;
 
     public abstract async getItem(key: string): Promise<T | null>;
 

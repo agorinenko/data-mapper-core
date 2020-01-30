@@ -1,10 +1,13 @@
 import axios, {AxiosPromise, AxiosRequestConfig, AxiosResponse} from 'axios'
-import BaseDataMapper from "@/base_data_mapper";
-import DataRow from "@/data_row";
-import GetItemsResult from "@/get_items_result";
-import StringUtils from "@/string_utils";
+import BaseDataMapper from "./base_data_mapper";
+import DataRow from "./data_row";
+
+import StringUtils from "./string_utils";
+import GetItemsResult from "./get_items_result";
 
 export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDataMapper<T> {
+
+    protected abstract get url(): string;
     /**
      * Execute DELETE web method
      * @param key - resource key
@@ -56,7 +59,7 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
      * Execute GET web method for resources
      * @param filter - query filter
      */
-    async getItems(filter: { params?: any; }): Promise<GetItemsResult<T>> {
+    async getItems(filter?: { params?: any; }): Promise<GetItemsResult<T>> {
         const requestConfig: AxiosRequestConfig = {
             url: this.url,
             method: 'GET',
@@ -79,9 +82,9 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
 
     /**
      * Execute POST web method for new resource
-     * @param payload - new resource
+     * @param payload - new resource data
      */
-    async insert(payload: { data?: any; }): Promise<T> {
+    async insert(payload: { data: any; }): Promise<T> {
         const requestConfig: AxiosRequestConfig = {
             url: this.url,
             method: 'POST',
@@ -94,7 +97,12 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
         return this.map(response.data);
     }
 
-    async update(key: string, payload: { data?: any; }): Promise<boolean> {
+    /**
+     * Execute PUT web method for update resource
+     * @param key - resource key
+     * @param payload - new resource data
+     */
+    async update(key: string, payload: { data: any; }): Promise<boolean> {
         let url = this.url;
         if(!StringUtils.stringIsNullOrEmpty(key)) {
             url = StringUtils.concat(this.url, '/', key);
@@ -111,8 +119,6 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
 
         return true;
     }
-
-    protected abstract get url(): string;
 
     protected sendRequest(requestConfig: AxiosRequestConfig): AxiosPromise {
         return axios(requestConfig);
