@@ -23,6 +23,6 @@ export default class TestUserDataMapper extends JsonRemoteDataMapper<TestUserInf
     }
 
     get KEY_FIELD_NAME(): string {
-        return "login";
+        return "username";
     }
 }

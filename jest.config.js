@@ -1,4 +1,8 @@
 module.exports = {
     verbose: true,
-    moduleFileExtensions: ['js','ts', 'tsx'],
+    transform: {
+        '^.+\\.(ts|html)$': 'ts-jest',
+        '^.+\\.js$': 'babel-jest'
+    },
+    transformIgnorePatterns: ['node_modules/(?!@agm)']
 };

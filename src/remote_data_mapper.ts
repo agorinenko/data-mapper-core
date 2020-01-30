@@ -4,17 +4,19 @@ import DataRow from "./data_row";
 
 import StringUtils from "./string_utils";
 import GetItemsResult from "./get_items_result";
+import RemoteException from "./remote_exception";
 
 export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDataMapper<T> {
 
     protected abstract get url(): string;
+
     /**
      * Execute DELETE web method
      * @param key - resource key
      */
     async delete(key: string): Promise<boolean> {
         let url = this.url;
-        if(!StringUtils.stringIsNullOrEmpty(key)) {
+        if (!StringUtils.stringIsNullOrEmpty(key)) {
             url = StringUtils.concat(this.url, '/', key);
         }
 
@@ -25,7 +27,7 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
 
         const response: AxiosResponse<any> = await this.sendRequest(requestConfig);
 
-        this.raiseExceptionIfNeed(response);
+        // this.raiseExceptionIfNeed(response);
 
         return true;
     }
@@ -36,7 +38,7 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
      */
     async getItem(key: string): Promise<T | null> {
         let url = this.url;
-        if(!StringUtils.stringIsNullOrEmpty(key)) {
+        if (!StringUtils.stringIsNullOrEmpty(key)) {
             url = StringUtils.concat(this.url, '/', key);
         }
 
@@ -45,7 +47,7 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
             method: 'GET'
         };
         const response: AxiosResponse<any> = await this.sendRequest(requestConfig);
-        this.raiseExceptionIfNeed(response);
+        // this.raiseExceptionIfNeed(response);
 
         const data = response.data;
         if (data != null) {
@@ -65,11 +67,18 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
             method: 'GET',
             ...filter
         };
-        const response: AxiosResponse<any> = await this.sendRequest(requestConfig);
-        this.raiseExceptionIfNeed(response);
+
+        let response: AxiosResponse<any>;
+        try {
+            response = await this.sendRequest(requestConfig);
+        }
+        catch (error) {
+            //TODO: Rise exception
+            throw new RemoteException(error);
+        }
 
         const result = new GetItemsResult<T>();
-        if (null != response) {
+        if (response) {
             const data = response.data;
             if (null != data) {
                 result.collection = this.convertCollection(data.results);//TODO для разных сервисов разный формат
@@ -92,7 +101,7 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
         };
 
         const response: AxiosResponse<any> = await this.sendRequest(requestConfig);
-        this.raiseExceptionIfNeed(response);
+        // this.raiseExceptionIfNeed(response);
 
         return this.map(response.data);
     }
@@ -104,7 +113,7 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
      */
     async update(key: string, payload: { data: any; }): Promise<boolean> {
         let url = this.url;
-        if(!StringUtils.stringIsNullOrEmpty(key)) {
+        if (!StringUtils.stringIsNullOrEmpty(key)) {
             url = StringUtils.concat(this.url, '/', key);
         }
 
@@ -115,16 +124,22 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
         };
 
         const response: AxiosResponse<any> = await this.sendRequest(requestConfig);
-        this.raiseExceptionIfNeed(response);
+        // this.raiseExceptionIfNeed(response);
 
         return true;
     }
 
     protected sendRequest(requestConfig: AxiosRequestConfig): AxiosPromise {
+        if (requestConfig.url) {
+            if (requestConfig && requestConfig.method && requestConfig.method.toLocaleUpperCase() == 'GET') {
+                return axios.get(requestConfig.url, requestConfig)
+            }
+        }
+
         return axios(requestConfig);
     }
 
-    private raiseExceptionIfNeed(response: AxiosResponse<any>){
-        //TODO обработка ошибок
-    }
+    // private raiseExceptionIfNeed(error) {
+    //     throw ;
+    // }
 }

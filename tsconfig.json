@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "types": [
+      "jest"
+    ],
     "downlevelIteration": true,
     "strict": true,
-    "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,

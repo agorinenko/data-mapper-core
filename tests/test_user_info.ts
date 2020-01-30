@@ -4,4 +4,5 @@ export default class TestUserInfo  extends DataRow{
     public login?: string;
     public firstName?: string;
     public lastName?: string;
+    public fullName?: string;
 }
