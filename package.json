@@ -1,8 +1,9 @@
 {
   "name": "data-mapper-core",
-  "version": "0.0.2",
-  "description": "",
+  "version": "0.0.6",
+  "description": "Returns later :)",
   "main": "dist/data-mapper-core.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "test": "jest",
     "buildProduction": "webpack --mode production",
