@@ -1,5 +1,5 @@
 export default class StringUtils {
-  public static stringIsNullOrEmpty (str: string): boolean {
+  public static stringIsNullOrEmpty (str: string | undefined | null): boolean {
     return !(str && str.length);
   }
 

@@ -1,4 +1,4 @@
-import axios, {AxiosPromise, AxiosRequestConfig, AxiosResponse} from 'axios'
+import axios, {AxiosPromise, AxiosRequestConfig, AxiosResponse, Method} from 'axios'
 import BaseDataMapper from "./base_data_mapper";
 import DataRow from "./data_row";
 
@@ -124,22 +124,46 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
         };
 
         const response: AxiosResponse<any> = await this.sendRequest(requestConfig);
+        console.log(response);
         // this.raiseExceptionIfNeed(response);
 
         return true;
     }
 
     protected sendRequest(requestConfig: AxiosRequestConfig): AxiosPromise {
-        if (requestConfig.url) {
-            if (requestConfig && requestConfig.method && requestConfig.method.toLocaleUpperCase() == 'GET') {
-                return axios.get(requestConfig.url, requestConfig)
-            }
+        if (null == requestConfig) {
+            throw new RemoteException("Axios request config is null");
         }
 
-        return axios(requestConfig);
-    }
+        let url = requestConfig.url == undefined ? '' : requestConfig.url;
+        let method = requestConfig.method == undefined ? '' : requestConfig.method;
 
-    // private raiseExceptionIfNeed(error) {
-    //     throw ;
-    // }
+        if (StringUtils.stringIsNullOrEmpty(url)) {
+            throw new RemoteException("URL is null or empty");
+        }
+
+        if (StringUtils.stringIsNullOrEmpty(method)) {
+            throw new RemoteException("HTTP method is null or empty");
+        }
+        method = method.toLocaleUpperCase();
+
+        if (method == 'GET') {
+            return axios.get(url, requestConfig)
+        }
+
+        if (method == 'DELETE') {
+            return axios.delete(url, requestConfig)
+        }
+
+        if (method == 'POST') {
+            return axios.post(url, requestConfig.data, requestConfig)
+        }
+
+        if (method == 'PUT') {
+            return axios.put(url, requestConfig.data, requestConfig)
+        }
+
+
+        throw new Error("Not implemented error");
+    }
 }
