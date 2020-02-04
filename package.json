@@ -1,6 +1,6 @@
 {
   "name": "data-mapper-core",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Returns later :)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,7 +32,8 @@
     "@types/jest": "^25.1.0",
     "ts-jest": "^25.0.0"
   },
-  "keywords": ["typescript", "domain driven design", "data mapper", "remote data mapper", "REST API toolkit"],
+  "keywords": ["typescript", "domain driven design", "data mapper", "data-mapper", "object relational mapper", "remote data mapper", "REST API toolkit", "rest",
+    "rest-client", "client"],
   "author": "Gorinenko Anton",
   "license": "MIT"
 }
