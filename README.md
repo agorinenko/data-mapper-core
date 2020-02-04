@@ -1,4 +1,4 @@
-# What's the good of that?
+# A small typescript library for implementing patterns "domain driven design" and "data mapper"
 A small TypeScript library with great features:
 1. Placing the project's primary focus on the core domain and domain logic
 1. Basing complex designs on a model of the domain
@@ -18,7 +18,7 @@ package.json
 ```json
 {
   "dependencies": {
-    "data-mapper-core": "^1.0.0"
+    "data-mapper-core": "^1.0.2"
   }
 }
 ```

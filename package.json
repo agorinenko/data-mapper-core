@@ -1,6 +1,6 @@
 {
   "name": "data-mapper-core",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Returns later :)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
