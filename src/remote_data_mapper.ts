@@ -124,7 +124,6 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
         };
 
         const response: AxiosResponse<any> = await this.sendRequest(requestConfig);
-        console.log(response);
         // this.raiseExceptionIfNeed(response);
 
         return true;

@@ -1,35 +1,24 @@
 {
   "compilerOptions": {
+    "outDir": "dist",
     "target": "es5",
-    "types": [
-      "jest"
-    ],
+    "module": "commonjs",
+    "declaration": true,
+    "lib": ["es2017", "es7", "es6", "dom"],
     "downlevelIteration": true,
     "strict": true,
-    "importHelpers": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "sourceMap": true,
+    "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
       "@/*": [
         "src/*"
       ]
-    },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+    }
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.tsx",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "src/**/*.tsx"
   ],
   "exclude": [
     "node_modules",

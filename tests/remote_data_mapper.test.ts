@@ -1,7 +1,7 @@
 import TestUserDataMapper from "./test_user_data_mapper";
 import axios, {AxiosRequestConfig} from 'axios';
 import TestUserInfo from "./test_user_info";
-import GetItemsResult from "@/get_items_result";
+import GetItemsResult from "../src/get_items_result";
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;

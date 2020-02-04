@@ -1,10 +1,11 @@
 {
   "name": "data-mapper-core",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "description": "Returns later :)",
-  "main": "dist/data-mapper-core.js",
-  "types": "types/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "prepublish": "tsc",
     "test": "jest",
     "buildProduction": "webpack --mode production",
     "buildDevelopment": "webpack --mode development"
@@ -31,7 +32,7 @@
     "@types/jest": "^25.1.0",
     "ts-jest": "^25.0.0"
   },
-  "keywords": [],
+  "keywords": ["typescript", "domain driven design", "data mapper", "remote data mapper", "REST API toolkit"],
   "author": "Gorinenko Anton",
   "license": "MIT"
 }

@@ -5,7 +5,7 @@ let config = {
     entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'data-mapper-core.js',
+        filename: 'index.js',
         library: 'dataMapperCore',
         libraryTarget: 'umd',
     },
