@@ -160,5 +160,4 @@ Test POST web method for new resource
 const dataMapper = new TestUserDataMapper();
 const item: TestUserInfo = await dataMapper.insert({data: data});
 ```
-It's very simple! I am waiting for your feedback on the mail ;)
-[anton.gorinenko@gmail.com](mail:anton.gorinenko@gmail.com)
+It's very simple! I am waiting for your feedback on the mail anton.gorinenko@gmail.com ;)
