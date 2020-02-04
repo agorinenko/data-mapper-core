@@ -69,13 +69,9 @@ Response:
     "last_name": "George"
 }
 ```
-DELETE /users/GWashington 
+POST /users/GWashington
 
-Code 200
-
-UPDATE /users/GWashington
-
-Code 200
+Code 201
 
 Response:
 ```json
@@ -85,3 +81,84 @@ Response:
     "last_name": "George"
 }
 ```
+PUT /users/GWashington 
+
+Code 200
+
+Response:
+```json
+{ }
+```
+DELETE /users/GWashington 
+
+Code 200
+
+Response:
+```json
+{ }
+```
+OK! You can make a domain model for a user like this:
+```typescript
+import DataRow from "data-mapper-core/dist/data_row";
+
+export default class UserInfo  extends DataRow{
+    public login?: string;
+    public firstName?: string;
+    public lastName?: string;
+    public fullName?: string;
+}
+```
+And then you can make a data mapper class. It will help you extract data from the API into memory and abstract from the 
+data store that you don't control:
+```typescript
+import JsonRemoteDataMapper from "data-mapper-core/dist/json_remote_data_mapper";
+import UserInfo from "./user_info";
+
+export default class UserDataMapper extends JsonRemoteDataMapper<UserInfo> {
+
+    protected factory(key: string): UserInfo {
+        return new UserInfo(key);
+    }
+
+    protected get fieldMap(): Map<string, any> {
+        const map = new Map<string, any>();
+        map.set('login', 'username');
+        map.set('firstName', 'first_name');
+        map.set('lastName', 'last_name');
+        map.set('fullName', function (payload: any, internalKey: string) {
+            return `${payload["first_name"]} ${payload["last_name"]}`
+        });
+        return map;
+    }
+
+    protected get url(): string {
+        return "/users";
+    }
+
+    get KEY_FIELD_NAME(): string {
+        return "username";
+    }
+}
+```
+Test GET web method for resources
+```typescript
+const dataMapper = new TestUserDataMapper();
+const items: GetItemsResult<TestUserInfo> = await dataMapper.getItems();
+```
+Test GET web method for single resource
+```typescript
+const dataMapper = new TestUserDataMapper();
+const item: TestUserInfo | null = await dataMapper.getItem('GWashington');
+```
+Test DELETE web method
+```typescript
+const dataMapper = new TestUserDataMapper();
+const status: boolean = await dataMapper.delete('GWashington');
+```
+Test POST web method for new resource
+```typescript
+const dataMapper = new TestUserDataMapper();
+const item: TestUserInfo = await dataMapper.insert({data: data});
+```
+It's very simple! I am waiting for your feedback on the mail ;)
+[anton.gorinenko@gmail.com](mail:anton.gorinenko@gmail.com)
