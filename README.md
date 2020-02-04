@@ -35,7 +35,7 @@ import JsonRemoteDataMapper from "data-mapper-core/dist/json_remote_data_mapper"
 
 For example you have REST API endpoint
 
-GET /users
+**GET /users**
 
 Code 200
 
@@ -57,7 +57,7 @@ Response:
     "count": 2
 }
 ```
-GET /users/GWashington
+**GET /users/GWashington**
 
 Code 200
 
@@ -69,7 +69,7 @@ Response:
     "last_name": "George"
 }
 ```
-POST /users/GWashington
+**POST /users/GWashington**
 
 Code 201
 
@@ -81,7 +81,7 @@ Response:
     "last_name": "George"
 }
 ```
-PUT /users/GWashington 
+**PUT /users/GWashington**
 
 Code 200
 
@@ -89,7 +89,7 @@ Response:
 ```json
 { }
 ```
-DELETE /users/GWashington 
+**DELETE /users/GWashington**
 
 Code 200
 
