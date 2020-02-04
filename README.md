@@ -31,3 +31,57 @@ npm i data-mapper-core
 import JsonRemoteDataMapper from "data-mapper-core/dist/json_remote_data_mapper";
 ```
 ## Example
+[See tests for examples.](https://github.com/agorinenko/data-mapper-core/blob/master/tests/remote_data_mapper.test.ts)
+
+For example you have REST API endpoint
+
+GET /users
+
+Code 200
+
+Response:
+```json
+{
+    "results": [
+        {
+            "username": "GWashington",
+            "first_name": "Washington",
+            "last_name": "George"
+        },
+        {
+            "username": "JAdams",
+            "first_name": "Adams",
+            "last_name": "John"
+        }
+    ],
+    "count": 2
+}
+```
+GET /users/GWashington
+
+Code 200
+
+Response:
+```json
+{
+    "username": "GWashington",
+    "first_name": "Washington",
+    "last_name": "George"
+}
+```
+DELETE /users/GWashington 
+
+Code 200
+
+UPDATE /users/GWashington
+
+Code 200
+
+Response:
+```json
+{
+    "username": "GWashington",
+    "first_name": "Washington",
+    "last_name": "George"
+}
+```
