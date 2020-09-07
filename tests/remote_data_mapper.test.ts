@@ -2,6 +2,7 @@ import TestUserDataMapper from "./test_user_data_mapper";
 import axios, {AxiosRequestConfig} from 'axios';
 import TestUserInfo from "./test_user_info";
 import GetItemsResult from "../src/get_items_result";
+import {RemoteException} from "../src";
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -131,6 +132,57 @@ describe(header('Test Remote Data Mapper'), () => {
 
         expect(mockedAxios.put).toHaveBeenCalled();
         expect(status).toEqual(true);
+    });
+
+    it(title('On error'), async () => {
+        const data = {
+            username: 'GWashington',
+            first_name: 'Washington',
+            last_name: 'George',
+        };
+        const dataMapper = new TestUserDataMapper();
+
+        mockedAxios.get.mockResolvedValue({
+            data: {
+                details: 'On error'
+            },
+            status: 400,
+            statusText: "",
+            headers: {}
+        });
+        await expect(dataMapper.getItems()).rejects.toThrow(new RemoteException("Client error"));
+
+        await expect(dataMapper.getItem('GWashington')).rejects.toThrow(new RemoteException("Client error"));
+
+        mockedAxios.delete.mockResolvedValue({
+            data: {
+                details: 'On error'
+            },
+            status: 400,
+            statusText: "",
+            headers: {}
+        });
+        await expect(dataMapper.delete('GWashington')).rejects.toThrow(new RemoteException("Client error"));
+
+        mockedAxios.post.mockResolvedValue({
+            data: {
+                details: 'On error'
+            },
+            status: 400,
+            statusText: "",
+            headers: {}
+        });
+        await expect(dataMapper.insert({data: data})).rejects.toThrow(new RemoteException("Client error"));
+
+        mockedAxios.put.mockResolvedValue({
+            data: {
+                details: 'On error'
+            },
+            status: 400,
+            statusText: "",
+            headers: {}
+        });
+        await expect(dataMapper.update('GWashington', {data: data})).rejects.toThrow(new RemoteException("Client error") );
     });
 });
 

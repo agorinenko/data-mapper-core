@@ -1,10 +1,9 @@
-import axios, {AxiosPromise, AxiosRequestConfig, AxiosResponse, Method} from 'axios'
+import axios, {AxiosPromise, AxiosRequestConfig, AxiosResponse} from 'axios'
 import BaseDataMapper from "./base_data_mapper";
-import DataRow from "./data_row";
-
 import StringUtils from "./string_utils";
 import GetItemsResult from "./get_items_result";
 import RemoteException from "./remote_exception";
+import DataRow from "@/data_row";
 
 export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDataMapper<T> {
 
@@ -25,9 +24,8 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
             method: 'DELETE'
         };
 
-        const response: AxiosResponse<any> = await this.sendRequest(requestConfig);
-
-        // this.raiseExceptionIfNeed(response);
+        const response: AxiosResponse = await this.sendRequest(requestConfig);
+        this.raiseExceptionIfNeed(response);
 
         return true;
     }
@@ -46,12 +44,12 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
             url: url,
             method: 'GET'
         };
-        const response: AxiosResponse<any> = await this.sendRequest(requestConfig);
-        // this.raiseExceptionIfNeed(response);
+        const response: AxiosResponse = await this.sendRequest(requestConfig);
+        this.raiseExceptionIfNeed(response);
 
         const data = response.data;
         if (data != null) {
-            return this.map(data);
+            return this.map(data)
         }
 
         return null;
@@ -68,14 +66,8 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
             ...filter
         };
 
-        let response: AxiosResponse<any>;
-        try {
-            response = await this.sendRequest(requestConfig);
-        }
-        catch (error) {
-            //TODO: Rise exception
-            throw new RemoteException(error);
-        }
+        let response: AxiosResponse = await this.sendRequest(requestConfig);
+        this.raiseExceptionIfNeed(response);
 
         const result = new GetItemsResult<T>();
         if (response) {
@@ -100,8 +92,8 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
             ...payload
         };
 
-        const response: AxiosResponse<any> = await this.sendRequest(requestConfig);
-        // this.raiseExceptionIfNeed(response);
+        const response: AxiosResponse = await this.sendRequest(requestConfig);
+        this.raiseExceptionIfNeed(response);
 
         return this.map(response.data);
     }
@@ -123,10 +115,24 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
             ...payload
         };
 
-        const response: AxiosResponse<any> = await this.sendRequest(requestConfig);
-        // this.raiseExceptionIfNeed(response);
+        const response: AxiosResponse = await this.sendRequest(requestConfig);
+        this.raiseExceptionIfNeed(response);
 
         return true;
+    }
+
+    protected raiseExceptionIfNeed(response: AxiosResponse){
+        if(response.status>=400 && response.status < 500){
+            const ex = new RemoteException("Client error");
+            ex.response = response;
+
+            throw ex;
+        } else if(response.status>=500){
+            const ex = new RemoteException("Internal server error");
+            ex.response = response;
+
+            throw ex;
+        }
     }
 
     protected sendRequest(requestConfig: AxiosRequestConfig): AxiosPromise {
@@ -146,23 +152,19 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
         }
         method = method.toLocaleUpperCase();
 
+        let response: AxiosPromise;
         if (method == 'GET') {
-            return axios.get(url, requestConfig)
+            response = axios.get(url, requestConfig)
+        } else if (method == 'DELETE') {
+            response = axios.delete(url, requestConfig)
+        } else if (method == 'POST') {
+            response = axios.post(url, requestConfig.data, requestConfig)
+        } else if (method == 'PUT') {
+            response = axios.put(url, requestConfig.data, requestConfig)
+        } else {
+            throw new Error("Not implemented error");
         }
 
-        if (method == 'DELETE') {
-            return axios.delete(url, requestConfig)
-        }
-
-        if (method == 'POST') {
-            return axios.post(url, requestConfig.data, requestConfig)
-        }
-
-        if (method == 'PUT') {
-            return axios.put(url, requestConfig.data, requestConfig)
-        }
-
-
-        throw new Error("Not implemented error");
+        return response
     }
 }
