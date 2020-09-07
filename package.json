@@ -33,6 +33,7 @@
     "ts-jest": "^25.0.0"
   },
   "keywords": [
+    "front-end",
     "typescript",
     "domain driven design",
     "data mapper",
