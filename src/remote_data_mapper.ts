@@ -3,12 +3,12 @@ import BaseDataMapper from "./base_data_mapper";
 import StringUtils from "./string_utils";
 import GetItemsResult from "./get_items_result";
 import RemoteException from "./remote_exception";
-import DataRow from "@/data_row";
+import DataRow from "./data_row";
 
 export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDataMapper<T> {
-
     protected abstract get url(): string;
 
+    public static baseURL?: string;
     /**
      * Execute DELETE web method
      * @param key - resource key
@@ -67,6 +67,7 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
         };
 
         let response: AxiosResponse = await this.sendRequest(requestConfig);
+
         this.raiseExceptionIfNeed(response);
 
         const result = new GetItemsResult<T>();
@@ -121,13 +122,13 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
         return true;
     }
 
-    protected raiseExceptionIfNeed(response: AxiosResponse){
-        if(response.status>=400 && response.status < 500){
+    protected raiseExceptionIfNeed(response: AxiosResponse) {
+        if (response.status >= 400 && response.status < 500) {
             const ex = new RemoteException("Client error");
             ex.response = response;
 
             throw ex;
-        } else if(response.status>=500){
+        } else if (response.status >= 500) {
             const ex = new RemoteException("Internal server error");
             ex.response = response;
 
@@ -139,6 +140,8 @@ export default abstract class RemoteDataMapper<T extends DataRow> extends BaseDa
         if (null == requestConfig) {
             throw new RemoteException("Axios request config is null");
         }
+
+        requestConfig.baseURL = RemoteDataMapper.baseURL;
 
         let url = requestConfig.url == undefined ? '' : requestConfig.url;
         let method = requestConfig.method == undefined ? '' : requestConfig.method;

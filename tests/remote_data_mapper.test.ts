@@ -3,6 +3,7 @@ import axios, {AxiosRequestConfig} from 'axios';
 import TestUserInfo from "./test_user_info";
 import GetItemsResult from "../src/get_items_result";
 import {RemoteException} from "../src";
+import RemoteDataMapper from "../src/remote_data_mapper";
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -182,7 +183,41 @@ describe(header('Test Remote Data Mapper'), () => {
             statusText: "",
             headers: {}
         });
-        await expect(dataMapper.update('GWashington', {data: data})).rejects.toThrow(new RemoteException("Client error") );
+        await expect(dataMapper.update('GWashington', {data: data})).rejects.toThrow(new RemoteException("Client error"));
+    });
+
+    it(title('Test axios baseURL'), async () => {
+
+        const data = {
+            results: [
+                {
+                    username: 'GWashington',
+                    first_name: 'Washington',
+                    last_name: 'George',
+                },
+                {
+                    username: 'JAdams',
+                    first_name: 'Adams',
+                    last_name: 'John',
+                }
+            ],
+            count: 2
+        };
+
+        mockedAxios.get.mockResolvedValue({
+            data: data,
+            status: 200,
+            statusText: "",
+            headers: {}
+        });
+
+        RemoteDataMapper.baseURL = "http://localhost";
+
+        const dataMapper = new TestUserDataMapper();
+        const items: GetItemsResult<TestUserInfo> = await dataMapper.getItems();
+
+        expect(mockedAxios.get).toHaveBeenCalled();
+
     });
 });
 

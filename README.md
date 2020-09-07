@@ -30,6 +30,28 @@ npm i data-mapper-core
 ```javascript
 import JsonRemoteDataMapper from "data-mapper-core/dist/json_remote_data_mapper";
 ```
+## Global settings
+
+```javascript
+RemoteDataMapper.baseURL = "http://localhost";
+```
+For example, in Vue project
+```javascript
+import Vue from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store'
+import {RemoteDataMapper} from 'data-mapper-core';
+
+const baseURL = process.env.VUE_APP_BASE_URL;
+RemoteDataMapper.baseURL = baseURL;
+
+new Vue({
+  router,
+  store,
+  render: h => h(App)
+}).$mount('#app');
+```
 ## Example
 [See tests for examples.](https://github.com/agorinenko/data-mapper-core/blob/master/tests/remote_data_mapper.test.ts)
 

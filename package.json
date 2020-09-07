@@ -1,7 +1,7 @@
 {
   "name": "data-mapper-core",
-  "version": "1.0.3",
-  "description": "Returns later :)",
+  "version": "1.0.5",
+  "description": "A small typescript library for implementing patterns \"domain driven design\" and \"data mapper\".",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
