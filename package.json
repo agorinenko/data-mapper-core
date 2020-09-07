@@ -32,8 +32,18 @@
     "@types/jest": "^25.1.0",
     "ts-jest": "^25.0.0"
   },
-  "keywords": ["typescript", "domain driven design", "data mapper", "data-mapper", "object relational mapper", "remote data mapper", "REST API toolkit", "rest",
-    "rest-client", "client"],
+  "keywords": [
+    "typescript",
+    "domain driven design",
+    "data mapper",
+    "data-mapper",
+    "object relational mapper",
+    "remote data mapper",
+    "REST API toolkit",
+    "rest",
+    "rest-client",
+    "client"
+  ],
   "author": "Gorinenko Anton",
   "license": "MIT"
 }
