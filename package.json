@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/agorinenko/data-mapper-core",
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.21.1"
   },
   "devDependencies": {
     "babel-loader": "^8.0.6",
